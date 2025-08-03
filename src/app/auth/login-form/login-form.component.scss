@@ -1,0 +1,107 @@
+ion-content {
+  --background: #f4f6fb;
+}
+
+.auth-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 3.5rem 1.5rem 3.5rem 1.5rem; // More padding top and bottom
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  margin-top: 8vh;    // Fine for desktop/tablet
+  margin-bottom: 8vh; // Add space at the bottom too
+}
+
+.auth-form h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.form-field {
+  margin-bottom: 1rem;
+}
+
+ion-label {
+  font-size: 15px;
+  color: #222;
+}
+
+ion-note[color="success"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #dfffe1;
+  color: #21a545 !important;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.08rem;
+  margin: 0 auto 18px auto;
+  padding: 12px 0;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(33, 165, 69, 0.07);
+  transition: background 0.3s;
+  ion-icon {
+    margin-right: 8px;
+    font-size: 24px;
+    color: #21a545;
+  }
+}
+
+.success-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e6f8ea;
+  color: #18863b;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1.08rem;
+  margin: 18px auto 0 auto;
+  padding: 12px 0;
+  max-width: 340px;
+  min-height: 44px;
+  box-shadow: 0 2px 8px rgba(30, 180, 80, 0.07);
+  text-align: center;
+  letter-spacing: 0.5px;
+  ion-icon {
+    margin-right: 10px;
+    font-size: 22px;
+    color: #23b85d;
+  }
+}
+
+ion-note[color="danger"] {
+  font-size: 0.92rem;
+  margin-bottom: 0.75rem;
+  color: #d32f2f;
+  background: #fff5f5;
+  border-radius: 4px;
+  padding: 8px 0 6px 10px;
+}
+
+ion-button[type="submit"] {
+  width: 100%;
+  margin-top: 1rem;
+  --background: #006aff;
+  --border-radius: 12px;
+  --color: #fff;
+  font-weight: 500;
+  font-size: 1.08rem;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .auth-form.centered {
+    margin: 2vh 0 0 0;
+    padding: 1rem;
+    max-width: none;
+    border-radius: 10px;
+  }
+}

@@ -1,0 +1,83 @@
+<ion-content class="ion-padding" fullscreen>
+  <div class="auth-form">
+    <header><h1>Se connecter</h1></header>
+    <form (ngSubmit)="onSubmit()" autocomplete="off">
+      <!-- Email field -->
+      <ion-item
+        lines="full"
+        class="form-field"
+        [class.invalid]="email.invalid && (email.dirty || email.touched)"
+      >
+        <ion-label position="stacked">Enter your email</ion-label>
+        <ion-input
+          type="email"
+          placeholder="email@example.com"
+          [formControl]="email"
+          required
+          autocomplete="username"
+          (ionBlur)="updateErrorMessages()"
+          (ionFocus)="clearApiError()"
+          (ionInput)="clearApiError()"
+        ></ion-input>
+      </ion-item>
+      <ion-note
+        color="danger"
+        *ngIf="email.invalid && (email.dirty || email.touched)"
+      >
+        <div *ngFor="let msg of errorMessages()">{{ msg }}</div>
+      </ion-note>
+      <!-- Password field -->
+      <ion-item
+        lines="full"
+        class="form-field"
+        [class.invalid]="password.invalid && (password.dirty || password.touched)"
+      >
+        <ion-label position="stacked">Enter your password</ion-label>
+        <ion-input
+          [type]="hide() ? 'password' : 'text'"
+          [formControl]="password"
+          required
+          autocomplete="current-password"
+          (ionFocus)="clearApiError()"
+          (ionInput)="clearApiError()"
+        ></ion-input>
+        <ion-button
+          fill="clear"
+          slot="end"
+          type="button"
+          [attr.aria-label]="hide() ? 'Show password' : 'Hide password'"
+          [attr.aria-pressed]="!hide()"
+          (click)="togglePassword()"
+          style="margin-left: 8px"
+        >
+          <ion-icon
+            [name]="hide() ? 'eye-off-outline' : 'eye-outline'"
+          ></ion-icon>
+        </ion-button>
+      </ion-item>
+      <ion-note
+        color="danger"
+        *ngIf="password.invalid && (password.dirty || password.touched)"
+      >
+        <div>Le mot de passe est requis</div>
+      </ion-note>
+      <!-- API error -->
+      <ion-note color="danger" *ngIf="apiErrorMessage()">
+        {{ apiErrorMessage() }}
+      </ion-note>
+      <!-- Submit Button -->
+      <ion-button
+        expand="block"
+        type="submit"
+        [disabled]="email.invalid || password.invalid"
+        class="ion-margin-top"
+      >
+        Se connecter
+      </ion-button>
+    </form>
+    <div *ngIf="authFacade.isLogged()" class="success-message">
+      <ion-icon name="checkmark-circle-outline"></ion-icon>
+      Connexion réussie&nbsp;!
+    </div>
+  </div>
+</ion-content>
