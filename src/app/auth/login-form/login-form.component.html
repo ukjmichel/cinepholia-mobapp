@@ -1,6 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cinepholia | authentification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="ion-padding" fullscreen>
   <div class="auth-form">
-    <header><h1>Se connecter</h1></header>
+    <!-- Optional: remove the <header> below, since we now have an ion-title -->
+    <!-- <header><h1>Se connecter</h1></header> -->
     <form (ngSubmit)="onSubmit()" autocomplete="off">
       <!-- Email field -->
       <ion-item
@@ -30,7 +37,9 @@
       <ion-item
         lines="full"
         class="form-field"
-        [class.invalid]="password.invalid && (password.dirty || password.touched)"
+        [class.invalid]="
+          password.invalid && (password.dirty || password.touched)
+        "
       >
         <ion-label position="stacked">Enter your password</ion-label>
         <ion-input

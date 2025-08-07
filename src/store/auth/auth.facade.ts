@@ -46,9 +46,20 @@ export class AuthFacade {
     this.store.dispatch(AuthActions.logout());
   }
 
-  /** Dispatch user fetch action (silent login/session check) */
+  /**
+   * Dispatch user fetch action (silent login/session check).
+   * Call this at app startup to restore auth state from server.
+   */
   getUser() {
     this.store.dispatch(AuthActions.getUser());
+  }
+
+  /**
+   * Call this ONCE on app startup to restore auth/session state.
+   * (Semantic alias for getUser)
+   */
+  initAuth() {
+    this.getUser();
   }
 
   /** Clear any error messages from state */

@@ -3,17 +3,18 @@
     <ion-title class="ion-text-center">Cinepholia</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
-  <ion-tabs>
-    <ion-router-outlet></ion-router-outlet>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="booking-list" [routerLink]="['/tabs/booking-list']">
-        <ion-icon name="calendar"></ion-icon>
-      </ion-tab-button>
-      <ion-tab-button tab="profile" [routerLink]="['/tabs/profile']">
-        <ion-icon name="person"></ion-icon>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
-</ion-content>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button
+      tab="upcoming-booking"
+      [routerLink]="['/tabs/upcoming-booking']"
+    >
+      <ion-icon name="calendar"></ion-icon>
+      <ion-label>Bookings</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="profile" [routerLink]="['/tabs/profile']">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>Profile</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

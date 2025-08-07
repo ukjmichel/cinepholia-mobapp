@@ -7,11 +7,7 @@ import { catchError, exhaustMap, map, switchMap, tap } from 'rxjs/operators';
 
 import * as AuthActions from './auth.actions';
 import { environment } from '../../environments/environment';
-import {
-  LoginResponse,
-  RegisterResponse,
-  User,
-} from 'src/app/models/auth.model';
+import { AuthResponse } from 'src/app/models/auth.model';
 
 @Injectable()
 export class AuthEffects {
@@ -20,26 +16,18 @@ export class AuthEffects {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
 
-  /**
-   * Login effect:
-   * Tries to log in with provided credentials.
-   * On success, dispatches loginSuccess with the response.
-   * On failure, dispatches loginFailure with error details.
-   */
+  /** Login effect */
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
       exhaustMap(({ email, password }) =>
         this.http
-          .post<LoginResponse>(
+          .post<AuthResponse>(
             `${this.apiUrl}auth/login`,
             { emailOrUsername: email, password },
             { withCredentials: true }
           )
           .pipe(
-            /*tap((response) =>
-              console.log('[AuthEffects] login response:', response)
-            ),*/
             map((response) => AuthActions.loginSuccess(response)),
             catchError((error) =>
               of(
@@ -54,27 +42,19 @@ export class AuthEffects {
     )
   );
 
-  /**
-   * Register effect:
-   * Tries to register a new user.
-   * On success, dispatches registerSuccess with the API response.
-   * On failure, dispatches registerFailure with error details.
-   */
+  /** Register effect */
   register$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.register),
       exhaustMap(({ email, username, password, firstName, lastName }) =>
         this.http
-          .post<RegisterResponse>(
+          .post<AuthResponse>(
             `${this.apiUrl}auth/register`,
             { email, username, password, firstName, lastName },
             { withCredentials: true }
           )
           .pipe(
-            /*tap((response) =>
-              console.log('[AuthEffects] register response:', response)
-            ),*/
-            map((response) => AuthActions.registerSuccess({ response })),
+            map((response) => AuthActions.registerSuccess(response)),
             catchError((error) =>
               of(
                 AuthActions.registerFailure({
@@ -90,32 +70,18 @@ export class AuthEffects {
     )
   );
 
-  /**
-   * Load current user (session check) effect:
-   * Fetches /users/me to get the current authenticated user's public info.
-   * If not authenticated (401), attempts silent refresh.
-   * On other errors, dispatches getUserFailure.
-   */
+  /** Load current user (session check) effect */
   loadUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.getUser),
       switchMap(() =>
         this.http
-          .get<{ message: string; data: User }>(`${this.apiUrl}users/me`, {
+          .get<AuthResponse>(`${this.apiUrl}users/me`, {
             withCredentials: true,
           })
           .pipe(
-            /*tap((response) =>
-              console.log('[AuthEffects] getUser response:', response)
-            ),*/
-            map((response) =>
-              AuthActions.getUserSuccess({
-                message: response.message,
-                data: { user: response.data }, // wrap user as { user }
-              })
-            ),
+            map((response) => AuthActions.getUserSuccess(response)),
             catchError((error) => {
-              console.log('[AuthEffects] getUser error:', error);
               if (error.status === 401) {
                 return of(AuthActions.refreshToken());
               }

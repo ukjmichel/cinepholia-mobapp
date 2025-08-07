@@ -1,0 +1,94 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <ng-container *ngIf="loading">
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && bookings.length === 0">
+    <div class="no-bookings">
+      <ion-note color="medium">Aucune réservation à venir.</ion-note>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && bookings.length > 0">
+    <div class="carousel-wrapper">
+      <button type="button"
+        class="arrow left-arrow"
+        (click)="slidePrev()"
+        [disabled]="bookings.length <= 1">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+
+      <swiper-container
+        #swiperEl
+        [slidesPerView]="1"
+        [spaceBetween]="16"
+        [centeredSlides]="true"
+        [speed]="400"
+        [loop]="false"
+        (swiperinit)="onSwiperInit($event)"
+        style="width: 100vw; height: 100%;"
+      >
+        <swiper-slide *ngFor="let booking of bookings; trackBy: trackByBookingId">
+          <div class="slide-content">
+            <ion-card>
+              <ng-container *ngIf="getMovieForBooking(booking) as movie; else loadingMovie">
+                <ion-card-header>
+                  <ion-card-title>{{ movie.title }}</ion-card-title>
+                  <div class="booking-date">
+                    {{ booking.createdAt | date:'short' }}
+                  </div>
+                </ion-card-header>
+                <ion-card-content>
+                  <div class="movie-details">
+                    <div><strong>Genre :</strong> {{ movie.genre }}</div>
+                    <div><strong>Réalisateur :</strong> {{ movie.director }}</div>
+                    <div><strong>Âge :</strong> {{ movie.ageRating }}</div>
+                    <div><strong>Durée :</strong> {{ movie.durationMinutes }} min</div>
+                  </div>
+                  <div class="qr-center-wrapper">
+                    <qrcode
+                      [qrdata]="booking.bookingId"
+                      [width]="160"
+                      [errorCorrectionLevel]="'M'"
+                    ></qrcode>
+                    <div class="booking-id-label">
+                      <small>ID réservation :</small>
+                      <span>{{ booking.bookingId }}</span>
+                    </div>
+                  </div>
+                  <div class="booking-details">
+                    <div><strong>Places :</strong> {{ booking.seatsNumber }}</div>
+                    <div>
+                      <strong>Prix total :</strong>
+                      {{ booking.totalPrice | currency:'EUR':'symbol-narrow':'1.2-2' }}
+                    </div>
+                    <div>
+                      <strong>Date de réservation :</strong>
+                      {{ booking.createdAt | date:'short' }}
+                    </div>
+                  </div>
+                </ion-card-content>
+              </ng-container>
+              <ng-template #loadingMovie>
+                <ion-card-content>
+                  <ion-spinner name="crescent"></ion-spinner>
+                  <div>Chargement du film...</div>
+                </ion-card-content>
+              </ng-template>
+            </ion-card>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+
+      <button type="button"
+        class="arrow right-arrow"
+        (click)="slideNext()"
+        [disabled]="bookings.length <= 1">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+      </button>
+    </div>
+  </ng-container>
+</ion-content>

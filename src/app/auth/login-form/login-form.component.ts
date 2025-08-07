@@ -14,7 +14,7 @@ import {
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router'; // <-- Add Router here
 import {
   IonInput,
   IonButton,
@@ -23,6 +23,9 @@ import {
   IonLabel,
   IonIcon,
   IonNote,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/angular/standalone';
 
 import { CommonModule } from '@angular/common';
@@ -32,6 +35,7 @@ import { AuthFacade } from 'src/store/auth/auth.facade';
   selector: 'app-login-form',
   standalone: true,
   imports: [
+    IonHeader,
     IonInput,
     IonButton,
     IonContent,
@@ -43,6 +47,8 @@ import { AuthFacade } from 'src/store/auth/auth.facade';
     ReactiveFormsModule,
     RouterModule,
     CommonModule,
+    IonToolbar,
+    IonTitle,
   ],
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
@@ -56,7 +62,11 @@ export class LoginFormComponent {
   errorMessages = signal<string[]>([]);
   apiErrorMessage: Signal<string | null>;
 
-  constructor(public authFacade: AuthFacade, private route: ActivatedRoute) {
+  constructor(
+    public authFacade: AuthFacade,
+    private route: ActivatedRoute,
+    private router: Router // <-- Inject router
+  ) {
     this.apiErrorMessage = this.authFacade.error;
     this.authFacade.clearError();
 
@@ -73,11 +83,10 @@ export class LoginFormComponent {
         this.clearApiError();
       });
 
-    // Log success when isLogged signal becomes true
+    // Redirect to upcoming booking page when login is successful
     effect(() => {
       if (this.authFacade.isLogged()) {
-        console.log('Login success!');
-        console.log('User:', this.authFacade.user());
+        this.router.navigate(['/tabs/upcoming-booking']);
       }
     });
   }

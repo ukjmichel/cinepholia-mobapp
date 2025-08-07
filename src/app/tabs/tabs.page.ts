@@ -1,35 +1,14 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {
-  IonTabs,
-  IonTabBar,
-  IonTabButton,
-  IonIcon,
-  IonRouterOutlet,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-} from '@ionic/angular/standalone';
 import { RouterLink } from '@angular/router';
+import { IonTabs, IonTabBar, IonTabButton, IonLabel, IonIcon, IonHeader, IonToolbar, IonTitle } from "@ionic/angular/standalone";
+
 
 @Component({
   selector: 'app-tabs',
-  templateUrl: './tabs.page.html',
-  styleUrls: ['./tabs.page.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    IonTabs,
-    IonTabBar,
-    IonTabButton,
-    IonIcon,
-    IonRouterOutlet,
-    IonHeader,
-    IonToolbar,
-    IonTitle,
-    IonContent,
-    RouterLink
-  ],
+  templateUrl: 'tabs.page.html',
+  styleUrls: ['tabs.page.scss'],
+  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonHeader, IonToolbar, IonTitle,RouterLink],
 })
-export class TabsPage {}
+export class TabsPage {
+  constructor() {}
+}

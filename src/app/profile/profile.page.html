@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Profil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="loading">
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="error && !loading">
+    <ion-card color="danger">
+      <ion-card-content>{{ error }}</ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="user && !loading && !error">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Profil utilisateur</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div><strong>Identifiant :</strong> {{ user!.userId }}</div>
+        <div><strong>Nom d'utilisateur :</strong> {{ user!.username }}</div>
+        <div><strong>Email :</strong> {{ user!.email }}</div>
+        <div *ngIf="user.firstName">
+          <strong>Prénom :</strong> {{ user!.firstName }}
+        </div>
+        <div *ngIf="user.lastName">
+          <strong>Nom :</strong> {{ user!.lastName }}
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>

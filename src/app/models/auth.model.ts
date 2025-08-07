@@ -14,14 +14,11 @@ export interface User {
   updatedAt?: string;
 }
 
-export interface LoginResponse {
+export interface AuthResponse {
   message: string;
   data: {
     user: User;
   };
 }
 
-export interface RegisterResponse {
-  message: string;
-  data: User;
-}
+

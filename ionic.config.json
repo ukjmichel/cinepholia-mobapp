@@ -1,5 +1,7 @@
 {
   "name": "cinepholia-mobapp",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular-standalone"
 }

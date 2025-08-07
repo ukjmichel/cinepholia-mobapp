@@ -47,11 +47,11 @@ export const authReducer = createReducer(
     loading: true,
     error: null,
   })),
-  on(AuthActions.registerSuccess, (state, { response }) => ({
+  on(AuthActions.registerSuccess, (state, { data }) => ({
     ...state,
     isLogged: true,
-    user: response.data,
-    role: getValidRole(response.data.role ?? 'utilisateur'), // <-- fixed
+    user: data.user,
+    role: getValidRole(data.user.role ?? 'utilisateur'),
     loading: false,
     error: null,
   })),

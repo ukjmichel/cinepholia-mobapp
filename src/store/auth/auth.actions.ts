@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { LoginResponse, RegisterResponse } from 'src/app/models/auth.model';
-
+import { AuthResponse } from 'src/app/models/auth.model';
 
 // =======================================
 // Session/User Actions
@@ -12,7 +11,7 @@ export const getUser = createAction('[Auth] Get User');
 /** Dispatched when user fetch succeeds */
 export const getUserSuccess = createAction(
   '[Auth] Get User Success',
-  props<LoginResponse>()
+  props<AuthResponse>()
 );
 
 /** Dispatched when user fetch fails */
@@ -47,7 +46,7 @@ export const login = createAction(
 /** Dispatched when login succeeds */
 export const loginSuccess = createAction(
   '[Auth] Login Success',
-  props<LoginResponse>()
+  props<AuthResponse>()
 );
 
 /** Dispatched when login fails */
@@ -75,7 +74,7 @@ export const register = createAction(
 /** Dispatched when registration succeeds */
 export const registerSuccess = createAction(
   '[Auth] Register Success',
-  props<{ response: RegisterResponse }>()
+  props<AuthResponse>() // <-- Unified! No { response: ... }
 );
 
 /** Dispatched when registration fails */
