@@ -1,8 +1,14 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title class="ion-text-center">Cinepholia</ion-title>
+    <ion-title>Cinepholia</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-tabs>
   <ion-tab-bar slot="bottom">
     <ion-tab-button

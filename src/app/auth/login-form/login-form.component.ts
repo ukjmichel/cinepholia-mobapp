@@ -1,35 +1,36 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  signal,
   Signal,
   effect,
+  signal,
 } from '@angular/core';
 import {
   FormControl,
-  Validators,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { merge } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { Router, RouterModule, ActivatedRoute } from '@angular/router'; // <-- Add Router here
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
-  IonInput,
   IonButton,
   IonContent,
+  IonHeader,
+  IonIcon,
+  IonInput,
   IonItem,
   IonLabel,
-  IonIcon,
   IonNote,
-  IonHeader,
-  IonToolbar,
   IonTitle,
+  IonToolbar,
 } from '@ionic/angular/standalone';
 
 import { CommonModule } from '@angular/common';
 import { AuthFacade } from 'src/store/auth/auth.facade';
+import { User } from 'src/app/models/user.model'; // optional, only if you want strong typing
 
 @Component({
   selector: 'app-login-form',
@@ -65,7 +66,7 @@ export class LoginFormComponent {
   constructor(
     public authFacade: AuthFacade,
     private route: ActivatedRoute,
-    private router: Router // <-- Inject router
+    private router: Router
   ) {
     this.apiErrorMessage = this.authFacade.error;
     this.authFacade.clearError();
@@ -83,10 +84,23 @@ export class LoginFormComponent {
         this.clearApiError();
       });
 
-    // Redirect to upcoming booking page when login is successful
+    // Redirect based on role when login is successful
     effect(() => {
       if (this.authFacade.isLogged()) {
-        this.router.navigate(['/tabs/upcoming-booking']);
+        const user = this.authFacade.user() as User | null; // assumes user() is a Signal<User | null>
+        if (user) {
+          if (user.role === 'utilisateur') {
+            this.router.navigate(['/tabs/upcoming-booking']);
+          } else if (
+            user.role === 'employé' ||
+            user.role === 'administrateur'
+          ) {
+            this.router.navigate(['/scanner']);
+          } else {
+            // Fallback if role missing/unexpected
+            this.router.navigate(['/tabs/upcoming-booking']);
+          }
+        }
       }
     });
   }

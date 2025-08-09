@@ -1,0 +1,103 @@
+<!-- src/app/pages/scanner/scanner.page.html -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>QR Code Scanner</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- No permission -->
+  <div *ngIf="!hasPermission" class="ion-text-center">
+    <ion-text color="danger">
+      Camera permission is required to scan QR codes.
+    </ion-text>
+    <div class="ion-margin-top">
+      <ion-button (click)="requestPermission()">Grant permission</ion-button>
+    </div>
+  </div>
+
+  <!-- Live camera -->
+  <div *ngIf="hasPermission">
+    <zxing-scanner
+      [enable]="scanning"
+      (camerasFound)="onCamerasFound($event)"
+      (permissionResponse)="onHasPermission($event)"
+      (scanSuccess)="onScanSuccess($event)"
+    >
+    </zxing-scanner>
+
+    <ion-text color="medium" *ngIf="hasPermission && !hasDevices">
+      No cameras found on this device.
+    </ion-text>
+  </div>
+
+  <!-- Loading -->
+  <div class="ion-text-center ion-padding" *ngIf="loading">
+    <ion-spinner name="crescent"></ion-spinner>
+    <div class="ion-margin-top">Loading booking details…</div>
+  </div>
+
+  <!-- Error -->
+  <ion-text color="danger" *ngIf="errorMsg">{{ errorMsg }}</ion-text>
+
+  <!-- Booking -->
+  <ion-card *ngIf="!loading && booking">
+    <ion-card-header>
+      <ion-card-title>Booking</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div><strong>ID:</strong> {{ booking!.bookingId }}</div>
+      <div><strong>Status:</strong> {{ booking!.status }}</div>
+      <div><strong>Seats:</strong> {{ booking!.seatsNumber }}</div>
+      <div>
+        <strong>Total:</strong> {{ booking!.totalPrice | number:'1.2-2' }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Screening (populated) -->
+  <ion-card *ngIf="!loading && screening">
+    <ion-card-header>
+      <ion-card-title>Screening</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div><strong>Movie:</strong> {{ screening!.movie?.title || '—' }}</div>
+      <div>
+        <strong>Theater:</strong> {{ screening!.theater?.theaterId ||
+        screening!.theaterId || '—' }}
+      </div>
+      <div>
+        <strong>Hall:</strong> {{ screening!.hall!.hallId || screening!.hallId
+        || '—' }}
+      </div>
+      <div>
+        <strong>Start:</strong> {{ screening!.startTime | date:'medium' }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Actions -->
+  <div class="ion-margin-top" *ngIf="booking && !loading">
+    <ion-button
+      color="success"
+      (click)="markAsUsed()"
+      [disabled]="actionBusy || booking!.status === 'used'"
+    >
+      <ion-spinner *ngIf="actionBusy" name="dots"></ion-spinner>
+      <span *ngIf="!actionBusy">
+        {{ booking!.status === 'used' ? 'Already used' : 'Mark as used' }}
+      </span>
+    </ion-button>
+
+    <ion-button fill="outline" class="ion-margin-start" (click)="scanAnother()">
+      Scan another
+    </ion-button>
+  </div>
+
+
+</ion-content>
